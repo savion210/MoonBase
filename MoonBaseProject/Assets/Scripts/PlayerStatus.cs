@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PlayerStatus : MonoBehaviour
 {
+    public bool debug = false;
     public SC_FPSController controller;
     public Camera main;
     
@@ -14,13 +15,22 @@ public class PlayerStatus : MonoBehaviour
     [Range(0.0f, 10.0f)]
     public float sanity = 10.0f;
 
+    [Range(1.0f, 5.0f)]
+    public float water = 5.0f;
+
+    [Range(1.0f, 3.0f)]
+    public float food = 3.0f;
+
     // Start is called before the first frame update
     private void Start()
     {
         // Initializing Default Values
+        water = 5.0f;
+        food = 3.0f;
         sustenance = 10.0f;
         stamina = 10.0f;
         sanity = 10.0f;
+        debug = false;
     }
 
     // Update is called once per frame
@@ -68,7 +78,7 @@ public class PlayerStatus : MonoBehaviour
             sustenance = 0.0f;
     }
 
-    private HealthDeterrent _deterrent;
+    public HealthDeterrent _deterrent;
     private string _prevObjectName = string.Empty;
 
     private void FixedUpdate()
@@ -83,12 +93,47 @@ public class PlayerStatus : MonoBehaviour
             _deterrent = hit.transform.gameObject.GetComponent<HealthDeterrent>();
         }
 
-        print("There is something in front of the object!  " + hit.transform.name);
+        if (debug)
+        {
+            print(hit.collider.tag);
+            print("There is something in front of the object!  " + hit.transform.name);
+        }
 
         if (_deterrent == null) return;
-        
-        // TODO: Add a if statement for if the interaction is unsuccessful.
-        if(Input.GetKeyDown(KeyCode.E))
-            _deterrent.Interaction(this);
+
+       
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (hit.collider.tag == "Food")
+            {
+                _deterrent.Interaction(this, hit);
+                if (sustenance < 10.0f)
+                {
+                    sustenance += food;
+                    hit.collider.gameObject.SetActive(false);
+                    if (sustenance > 10.0f)
+                    {
+                        sustenance = 10.0f;
+                    }
+
+                }
+            }
+
+            if (hit.collider.tag == "Drink")
+            {
+                _deterrent.Interaction(this, hit);
+                if (sustenance < 10.0f)
+                {
+                    sustenance += water;
+                    hit.collider.gameObject.SetActive(false);
+                    if (sustenance > 10.0f)
+                    {
+                        sustenance = 10.0f;
+                    }
+
+                }
+            }
+        }
+            
     }
 }
