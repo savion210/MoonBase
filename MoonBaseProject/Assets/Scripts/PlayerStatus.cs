@@ -157,7 +157,7 @@ public class PlayerStatus : MonoBehaviour
         {
             if (hit.collider.tag == "Food")
             {
-                _deterrent.Interaction(this, hit);
+                _deterrent.Interaction(this);
                 if (sustenance < 10.0f)
                 {
                     sustenance += food;
@@ -172,7 +172,7 @@ public class PlayerStatus : MonoBehaviour
 
             if (hit.collider.tag == "Drink")
             {
-                _deterrent.Interaction(this, hit);
+                _deterrent.Interaction(this);
                 if (sustenance < 10.0f)
                 {
                     sustenance += water;
