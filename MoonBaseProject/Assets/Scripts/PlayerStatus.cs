@@ -44,7 +44,7 @@ public class PlayerStatus : MonoBehaviour
         abberation = volume.sharedProfile.GetSetting<ChromaticAberration>();
         
         
-        // Initialize their default values, cause these dang things don't save etween sessions.
+        // Initialize their default values, cause these dang things don't save between sessions.
         if (dof != null)
         {
             dof.focusDistance.value = 10.0f;
@@ -122,6 +122,11 @@ public class PlayerStatus : MonoBehaviour
             sustenance -= 0.01f * Time.deltaTime;
         else
             sustenance = 0.0f;
+    }
+
+    private void ProcessAberration()
+    {
+        
     }
 
     public HealthDeterrent _deterrent;
