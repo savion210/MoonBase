@@ -19,13 +19,16 @@ public class ObjectiveManager : MonoBehaviour
     [SerializeField] private GameObject chetConsole = null;
     [SerializeField] private TMP_InputField input = null;
     [SerializeField] private Button enterButton;
-    [SerializeField] private SC_FPSController playerController;
 
     // Start is called before the first frame update
     private void Awake()
     {
         if (Instance is null) Instance = this;
         allObjectives = Resources.LoadAll<Objective>("Data/Objectives");
+        for (int i = 0; i < allObjectives.Length; i++)
+        {
+            allObjectives[i].objectiveStatus = false;
+        }
         chetConsole.SetActive(false);
     }
 
@@ -50,8 +53,8 @@ public class ObjectiveManager : MonoBehaviour
     {
         foreach (var t in allObjectives)
         {
-            if (t.objectiveName == objectiveName)
-                t.objectiveStatus = status;
+            if (t.objectiveName != objectiveName) continue;
+            t.objectiveStatus = status;
             for (int i = 0; i < objectiveListPanel.transform.childCount; i++)
             {
                 if (objectiveListPanel.transform.GetChild(i).name == t.objectiveName)
@@ -60,7 +63,7 @@ public class ObjectiveManager : MonoBehaviour
             }
         }
     }
-
+#if UNITY_EDITOR
     private void Update()
     {
         if (Input.GetKeyUp(KeyCode.KeypadEnter))
@@ -71,4 +74,5 @@ public class ObjectiveManager : MonoBehaviour
         }
         
     }
+#endif
 }
