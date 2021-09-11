@@ -5785,6 +5785,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 9211906146710517448, guid: 6f13b4a62ab676a49986fe37d12abc00, type: 3}
+      propertyPath: speedOfDecay
+      value: 0.05
+      objectReference: {fileID: 0}
     - target: {fileID: 9211906146710517449, guid: 6f13b4a62ab676a49986fe37d12abc00, type: 3}
       propertyPath: volume
       value: 
