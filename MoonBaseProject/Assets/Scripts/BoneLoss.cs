@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public enum BoneDensity
@@ -20,14 +18,14 @@ public class BoneLoss : MonoBehaviour
     public BoneDensity boneDensityStatus;
     
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         tScore = 1.0f;
         boneDensityStatus = BoneDensity.Normal;
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         // Rate of decay 0.5 * 1.62 (Moon Gravity) * Time
         tScore -= 0.5f * (1.62f / 2) * Time.deltaTime * speedOfDecay;

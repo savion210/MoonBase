@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class PlayerStatus : MonoBehaviour
 {
@@ -18,7 +15,7 @@ public class PlayerStatus : MonoBehaviour
     public float sanity = 10.0f;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         // Initializing Default Values
         sustenance = 10.0f;
@@ -27,7 +24,7 @@ public class PlayerStatus : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         // Sanity
         if (sustenance < 1.0f)
@@ -70,24 +67,28 @@ public class PlayerStatus : MonoBehaviour
         else
             sustenance = 0.0f;
     }
-    
-    void FixedUpdate()
+
+    private HealthDeterrent _deterrent;
+    private string _prevObjectName = string.Empty;
+
+    private void FixedUpdate()
     {
-        Vector3 fwd = transform.TransformDirection(Vector3.forward);
-        
-        Debug.DrawRay(main.transform.position, main.transform.forward, Color.black);
+        ///Debug.DrawRay(main.transform.position, main.transform.forward, Color.black);
 
-        RaycastHit hit;
-        if (Physics.Raycast(main.transform.position, main.transform.forward, out hit, 100.0f))
+        if (!Physics.Raycast(main.transform.position, main.transform.forward, out var hit, 100.0f)) return;
+
+        if (_prevObjectName != hit.transform.name)
         {
-            var deterrent = hit.transform.gameObject.GetComponent<HealthDeterrent>();
-            print("There is something in front of the object!  " + hit.transform.gameObject.name);
-
-            if (deterrent != null)
-            {
-                // TODO: Make the interaction function only be called when pressing 'E' when on this object.
-                deterrent.Interaction(this);
-            }
+            _prevObjectName = hit.transform.name;
+            _deterrent = hit.transform.gameObject.GetComponent<HealthDeterrent>();
         }
+
+        print("There is something in front of the object!  " + hit.transform.name);
+
+        if (_deterrent == null) return;
+        
+        // TODO: Add a if statement for if the interaction is unsuccessful.
+        if(Input.GetKeyDown(KeyCode.E))
+            _deterrent.Interaction(this);
     }
 }
