@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR;
 
 [RequireComponent(typeof(CharacterController))]
 
 public class SC_FPSController : MonoBehaviour
 {
+    public BoneLoss boneDensity;
+    
     public float walkingSpeed = 7.5f;
     public float runningSpeed = 11.5f;
     public float jumpSpeed = 8.0f;
@@ -20,6 +23,8 @@ public class SC_FPSController : MonoBehaviour
 
     [HideInInspector]
     public bool canMove = true;
+
+    [HideInInspector] public bool canJump = true;
 
     public bool IsMoving { get; private set; }
     
@@ -42,11 +47,31 @@ public class SC_FPSController : MonoBehaviour
         float curSpeedX = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Vertical") : 0;
         float curSpeedY = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Horizontal") : 0;
         float movementDirectionY = moveDirection.y;
+
+        if (boneDensity.boneDensityStatus == BoneDensity.LowBoneMass)
+        {
+            curSpeedX *= 0.8f;
+            curSpeedY *= 0.8f;
+        }
+
+        if (boneDensity.boneDensityStatus == BoneDensity.Osteoporosis)
+        {
+            curSpeedX *= 0.5f;
+            curSpeedY *= 0.5f;
+            canJump = false;
+        }
+
+        if (boneDensity.boneDensityStatus == BoneDensity.SevereOsteoporosis)
+        {
+            canMove = false;
+            return;
+        }
+        
         moveDirection = (forward * curSpeedX) + (right * curSpeedY);
 
         IsMoving = curSpeedX != 0 || curSpeedY != 0;
 
-        if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
+        if (canJump && Input.GetButton("Jump") && canMove && characterController.isGrounded)
         {
             moveDirection.y = jumpSpeed;
         }

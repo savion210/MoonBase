@@ -365,6 +365,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 314134540d1be9b42b85e504f43aa993, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boneDensity: {fileID: 166892053}
   walkingSpeed: 7.5
   runningSpeed: 11.5
   jumpSpeed: 8
@@ -373,6 +374,7 @@ MonoBehaviour:
   lookSpeed: 2
   lookXLimit: 45
   canMove: 1
+  canJump: 1
 --- !u!143 &166892047
 CharacterController:
   m_ObjectHideFlags: 0
@@ -481,12 +483,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f56f7d992af14641ac0013007385c4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debug: 0
   controller: {fileID: 166892046}
   main: {fileID: 2022560757}
   volume: {fileID: 1798074804}
   sustenance: 10
   stamina: 10
   sanity: 10
+  water: 5
+  food: 3
+  deterrent: {fileID: 0}
 --- !u!114 &166892053
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -500,7 +506,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tScore: 1
-  speedOfDecay: 0.5
+  speedOfDecay: 0.15
   boneDensityStatus: 0
 --- !u!4 &230803674 stripped
 Transform:
