@@ -18,6 +18,7 @@ public class PlayerStatus : MonoBehaviour
 
     public Image blindWarning;
     public Image injuryWarning;
+    public Image nearingPtsdWarning;
     public Image ptsdWarning;
     
     [Range(0.0f, 10.0f)]
@@ -55,6 +56,7 @@ public class PlayerStatus : MonoBehaviour
         
         blindWarning.gameObject.SetActive(false);    
         injuryWarning.gameObject.SetActive(false);
+        nearingPtsdWarning.gameObject.SetActive(false);
         ptsdWarning.gameObject.SetActive(false);
         
         _dof = volume.sharedProfile.GetSetting<DepthOfField>();
@@ -200,18 +202,20 @@ public class PlayerStatus : MonoBehaviour
 
     private void ProcessPTSDAlpha()
     {
-        if (sanity <= 1.0f)
+        if (sanity <= 8.0f && sanity >= 4.0f)
         {
-            var tempColor = ptsdWarning.color;
-            tempColor.a = 1.0f;
-            ptsdWarning.color = tempColor;
+            nearingPtsdWarning.gameObject.SetActive(true);
+            var tempColor = nearingPtsdWarning.color;
+            tempColor.a = Map(sanity, 8.0f, 4.0f, 0.0f, 1.0f);
+            nearingPtsdWarning.color = tempColor;
         }
-        
-        if(sanity <= 8.0f)
+
+        if (sanity < 4.0f)
         {
+            nearingPtsdWarning.gameObject.SetActive(false);
             ptsdWarning.gameObject.SetActive(true);
             var tempColor = ptsdWarning.color;
-            tempColor.a = Map(sanity, 8.0f, 0.0f, 0.0f, 1.0f);
+            tempColor.a = 1.0f;
             ptsdWarning.color = tempColor;
         }
     }
