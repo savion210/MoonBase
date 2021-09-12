@@ -10,6 +10,8 @@ public class TaskMaster : MonoBehaviour
     [HideInInspector] public bool requiredGameObject = false;
     [SerializeField] private string objectiveName;
     [SerializeField] private GameObject actualObject = null;
+    
+    
 
     // Start is called before the first frame update
     void Start()

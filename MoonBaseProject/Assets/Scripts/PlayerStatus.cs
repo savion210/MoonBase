@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class PlayerStatus : MonoBehaviour
 {
+    public Text guideText;
     public bool debug;
     public SC_FPSController controller;
     public Camera main;
@@ -334,8 +335,14 @@ public class PlayerStatus : MonoBehaviour
             _prevObjectName = hit.transform.name;
             deterrent = hit.transform.gameObject.GetComponent<HealthDeterrent>();
         }
-        
-        if (deterrent == null) return;
+
+        if (deterrent == null)
+        {
+            guideText.text = "";
+            return;
+        }
+
+        guideText.text = "Press 'E' to Interact with the " + hit.collider.tag;
         
         if (Input.GetKeyDown(KeyCode.E))
         {
