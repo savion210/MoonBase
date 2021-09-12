@@ -5783,6 +5783,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6955320dc68b9564391d87c2912d9566, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  controller: {fileID: 1187012029}
   boneLoss: {fileID: 823498496}
   radiation: {fileID: 1453922060}
   status: {fileID: 823498497}
@@ -7942,6 +7943,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6f13b4a62ab676a49986fe37d12abc00, type: 3}
+--- !u!114 &1187012029 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9211906146710517459, guid: 6f13b4a62ab676a49986fe37d12abc00, type: 3}
+  m_PrefabInstance: {fileID: 1187012028}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 823498493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 314134540d1be9b42b85e504f43aa993, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1198738940
 GameObject:
   m_ObjectHideFlags: 0

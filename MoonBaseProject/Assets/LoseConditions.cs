@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class LoseConditions : MonoBehaviour
 {
+    public SC_FPSController controller;
+    
     public BoneLoss boneLoss;
 
     public Radiation radiation;
@@ -33,6 +35,9 @@ public class LoseConditions : MonoBehaviour
     private void Lost()
     {
         loseBanner.SetActive(true);
+        controller.enabled = false;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         Time.timeScale = 0.0f;
     }
 }
