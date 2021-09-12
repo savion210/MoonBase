@@ -8,6 +8,8 @@ TagManager:
   - Drink
   - Door
   - Tape
+  - Pickup
+  - Station
   layers:
   - Default
   - TransparentFX

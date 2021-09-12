@@ -18,6 +18,8 @@ public class Radiation : MonoBehaviour
     public RadiationExposure exposureLevel;
 
     public Image radiationWarning;
+
+    public GameObject gaugeNeedle;
     private void Start()
     {
         exposureLevel = RadiationExposure.Normal;
@@ -30,6 +32,7 @@ public class Radiation : MonoBehaviour
     {
         radiationLevel += RadiationPerHour * Time.deltaTime * radiationSpeed;
         ProcessAlpha();
+        ProcessGauge();
 
         if (radiationLevel < 1000)
         {
@@ -59,6 +62,13 @@ public class Radiation : MonoBehaviour
         }
     }
 
+    private void ProcessGauge()
+    {
+        var newRotation = Vector3.zero;
+        newRotation.z = PlayerStatus.Map(radiationLevel, 0, 10000, 135, -130);
+        gaugeNeedle.transform.localEulerAngles = newRotation;
+    }
+
     private void ProcessAlpha()
     {
         if (radiationLevel > 10000.0f)
@@ -73,5 +83,17 @@ public class Radiation : MonoBehaviour
             tempColor.a = PlayerStatus.Map(radiationLevel, 1000.0f, 10000.0f, 0.0f, 1.0f);
             radiationWarning.color = tempColor;
         }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Station"))
+            radiationSpeed = 0.0f;
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Station"))
+            radiationSpeed = 1.0f;
     }
 }

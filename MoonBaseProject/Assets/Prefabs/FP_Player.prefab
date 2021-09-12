@@ -162,6 +162,7 @@ GameObject:
   - component: {fileID: 9211906146710517448}
   - component: {fileID: 1783530350307614032}
   - component: {fileID: 9167358155242044205}
+  - component: {fileID: 6826486146726090041}
   m_Layer: 0
   m_Name: FP_Player
   m_TagString: Untagged
@@ -309,7 +310,9 @@ MonoBehaviour:
   sustenanceImage: {fileID: 0}
   blindWarning: {fileID: 0}
   injuryWarning: {fileID: 0}
+  nearingPtsdWarning: {fileID: 0}
   ptsdWarning: {fileID: 0}
+  reticleImage: {fileID: 0}
   sustenance: 10
   stamina: 10
   sanity: 10
@@ -348,6 +351,7 @@ MonoBehaviour:
   radiationSpeed: 1
   exposureLevel: 0
   radiationWarning: {fileID: 0}
+  gaugeNeedle: {fileID: 0}
 --- !u!114 &9167358155242044205
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -370,3 +374,20 @@ MonoBehaviour:
   rotationSpeedPiv1: 90
   rotationSpeedPiv2: -90
   rotationSpeedClosed: 0
+--- !u!114 &6826486146726090041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9211906146710517456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6955320dc68b9564391d87c2912d9566, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 9211906146710517459}
+  boneLoss: {fileID: 9211906146710517448}
+  radiation: {fileID: 1783530350307614032}
+  status: {fileID: 9211906146710517449}
+  loseBanner: {fileID: 0}

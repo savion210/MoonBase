@@ -12,8 +12,9 @@ public class ObjectiveManager : MonoBehaviour
 {
     public static ObjectiveManager Instance = null;
     private Objective[] allObjectives = null;
-    [SerializeField] private GameObject objectiveListPanel = null;
+    [SerializeField] private GameObject objectiveListPanel = null, winPanel;
     [SerializeField] private TextMeshProUGUI objectiveText = null;
+    [SerializeField] private SC_FPSController controller = null;
 
     [Header("Chet Console")]
     [SerializeField] private GameObject chetConsole = null;
@@ -30,6 +31,7 @@ public class ObjectiveManager : MonoBehaviour
             allObjectives[i].objectiveStatus = false;
         }
         chetConsole.SetActive(false);
+        winPanel.SetActive(false);
     }
 
     private void Start()
@@ -58,10 +60,31 @@ public class ObjectiveManager : MonoBehaviour
             for (int i = 0; i < objectiveListPanel.transform.childCount; i++)
             {
                 if (objectiveListPanel.transform.GetChild(i).name == t.objectiveName)
+                {
                     objectiveListPanel.transform.GetChild(i).GetComponent<TextMeshProUGUI>().fontStyle =
                         FontStyles.Strikethrough;
+                    objectiveListPanel.transform.GetChild(i).GetComponent<TextMeshProUGUI>().color = Color.green;
+                    
+                }
             }
         }
+        CheckWinState();
+    }
+
+    private void CheckWinState()
+    {
+        int totalCompletedStatus = 0;
+        foreach (var t in allObjectives)
+        {
+            if (!(t.objectiveStatus is true)) continue;
+            totalCompletedStatus++;
+        }
+        if (!(totalCompletedStatus is 3)) return;
+        Time.timeScale = 0;
+        winPanel.SetActive(true);
+        controller.enabled = false;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 #if UNITY_EDITOR
     private void Update()
