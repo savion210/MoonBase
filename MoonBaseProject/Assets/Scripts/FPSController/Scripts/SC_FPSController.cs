@@ -6,13 +6,13 @@ public class SC_FPSController : MonoBehaviour
 {
     public BoneLoss boneDensity;
     
-    public float walkingSpeed = 7.5f;
+    public float walkingSpeed = 3.75f;
     public float runningSpeed = 11.5f;
     public float jumpSpeed = 8.0f;
     public float gravity = 20.0f;
     public Camera playerCamera;
-    public float lookSpeed = 2.0f;
-    public float lookXLimit = 45.0f;
+    public float lookSpeed = 1.5f;
+    public float lookXLimit = 50.0f;
 
     CharacterController characterController;
     Vector3 moveDirection = Vector3.zero;
@@ -45,7 +45,7 @@ public class SC_FPSController : MonoBehaviour
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
         // Press Left Shift to run
-        bool isRunning = Input.GetKey(KeyCode.LeftShift);
+        bool isRunning = false;//Input.GetKey(KeyCode.LeftShift);
         float curSpeedX = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Vertical") : 0;
         float curSpeedY = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Horizontal") : 0;
         float movementDirectionY = moveDirection.y;
