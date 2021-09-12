@@ -30,11 +30,11 @@ public class PlayerStatus : MonoBehaviour
     [Range(0.0f, 10.0f)]
     public float sanity = 10.0f;
 
-    [Range(1.0f, 5.0f)]
+    [Range(0.0f, 5.0f)]
     public float water = 5.0f;
 
-    [Range(1.0f, 3.0f)]
-    public float food = 3.0f;
+    [Range(0.0f, 5.0f)]
+    public float food = 5.0f;
     
     private DepthOfField _dof;
     private Grain _grain;
@@ -47,8 +47,8 @@ public class PlayerStatus : MonoBehaviour
     {
         // Initializing Default Values
         water = 5.0f;
-        food = 3.0f;
-        sustenance = 10.0f;
+        food = 5.0f;
+        sustenance = water + food;
         stamina = 10.0f;
         sanity = 10.0f;
         debug = false;
@@ -106,7 +106,9 @@ public class PlayerStatus : MonoBehaviour
         ProcessAberration();
         ProcessRadiationLevels();
         ProcessPTSDAlpha();
-        
+
+        sustenance = food + water;
+
         sanityImage.fillAmount = Map(sanity, 0.0f, 10.0f, 0.0f, 1.0f);
         staminaImage.fillAmount = Map(stamina, 0.0f, 10.0f, 0.0f, 1.0f);
         sustenanceImage.fillAmount = Map(sustenance, 0.0f, 10.0f, 0.0f, 1.0f);
@@ -124,7 +126,11 @@ public class PlayerStatus : MonoBehaviour
         
         if (controller.IsMoving)
         {
-            sustenance -= 0.01f * Time.deltaTime * _radiationMultiplier;            
+            food -= 0.01f * Time.deltaTime * _radiationMultiplier;
+            water -= 0.01f * Time.deltaTime * _radiationMultiplier;
+
+            sustenance = food + water;
+            
             if (stamina > 0.0f)
             {
                 stamina -= 0.1f * Time.deltaTime * _radiationMultiplier;
@@ -147,10 +153,18 @@ public class PlayerStatus : MonoBehaviour
         }
         
         // Sustenance
-        if(sustenance > 0.0f)
-            sustenance -= 0.01f * Time.deltaTime * _radiationMultiplier;
+        if (sustenance > 0.0f)
+        {
+            food -= 0.01f * Time.deltaTime * _radiationMultiplier;
+            water -= 0.01f * Time.deltaTime * _radiationMultiplier;
+            sustenance = food + water;
+        }
         else
-            sustenance = 0.0f;
+        {
+            food = 0;
+            water = 0;
+            sustenance = 0;
+        }
     }
 
     private void ProcessBlur()
@@ -202,11 +216,12 @@ public class PlayerStatus : MonoBehaviour
 
     private void ProcessPTSDAlpha()
     {
-        if (sanity <= 8.0f && sanity >= 4.0f)
+        if (sanity <= 8.0f && sanity >= 5.0f)
         {
+            ptsdWarning.gameObject.SetActive(false);
             nearingPtsdWarning.gameObject.SetActive(true);
             var tempColor = nearingPtsdWarning.color;
-            tempColor.a = Map(sanity, 8.0f, 4.0f, 0.0f, 1.0f);
+            tempColor.a = Map(sanity, 8.0f, 5.0f, 0.0f, 1.0f);
             nearingPtsdWarning.color = tempColor;
         }
 
@@ -248,13 +263,13 @@ public class PlayerStatus : MonoBehaviour
             if (hit.collider.CompareTag("Food"))
             {
                 deterrent.Interaction(this);
-                if (sustenance < 10.0f)
+                if (food < 5.0f)
                 {
-                    sustenance += food;
+                    food += 0.5f;
                     hit.collider.gameObject.SetActive(false);
-                    if (sustenance > 10.0f)
+                    if (food > 5.0f)
                     {
-                        sustenance = 10.0f;
+                        food = 5.0f;
                     }
                 }
             }
@@ -262,13 +277,13 @@ public class PlayerStatus : MonoBehaviour
             if (hit.collider.CompareTag("Drink"))
             {
                 deterrent.Interaction(this);
-                if (sustenance < 10.0f)
+                if (water < 5.0f)
                 {
-                    sustenance += water;
+                    water += 0.5f;
                     hit.collider.gameObject.SetActive(false);
-                    if (sustenance > 10.0f)
+                    if (water > 5.0f)
                     {
-                        sustenance = 10.0f;
+                        water = 5.0f;
                     }
                 }
             }
