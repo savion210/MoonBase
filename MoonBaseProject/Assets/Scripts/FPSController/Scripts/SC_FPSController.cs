@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
@@ -27,7 +28,12 @@ public class SC_FPSController : MonoBehaviour
     [HideInInspector] public bool canJump = true;
 
     public bool IsMoving { get; private set; }
-    
+
+    private void Awake()
+    {
+        Time.timeScale = 1.0f;
+    }
+
     void Start()
     {
         characterController = GetComponent<CharacterController>();

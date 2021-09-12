@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -73,5 +74,17 @@ public class Radiation : MonoBehaviour
             tempColor.a = PlayerStatus.Map(radiationLevel, 1000.0f, 10000.0f, 0.0f, 1.0f);
             radiationWarning.color = tempColor;
         }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Station"))
+            radiationSpeed = 0.0f;
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Station"))
+            radiationSpeed = 1.0f;
     }
 }
