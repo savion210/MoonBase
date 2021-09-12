@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ec85c8efdff4504c8384b232f585570, type: 3}
   m_Name: Objective1
   m_EditorClassIdentifier: 
-  objectiveName: Replace Missing Panel
+  objectiveName: '*Replace Missing Panel'
   objectiveStatus: 0

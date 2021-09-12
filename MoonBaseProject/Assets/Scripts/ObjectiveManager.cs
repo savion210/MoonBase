@@ -12,7 +12,7 @@ public class ObjectiveManager : MonoBehaviour
 {
     public static ObjectiveManager Instance = null;
     private Objective[] allObjectives = null;
-    [SerializeField] private GameObject objectiveListPanel = null;
+    [SerializeField] private GameObject objectiveListPanel = null, winPanel;
     [SerializeField] private TextMeshProUGUI objectiveText = null;
 
     [Header("Chet Console")]
@@ -30,6 +30,7 @@ public class ObjectiveManager : MonoBehaviour
             allObjectives[i].objectiveStatus = false;
         }
         chetConsole.SetActive(false);
+        winPanel.SetActive(false);
     }
 
     private void Start()
@@ -61,6 +62,16 @@ public class ObjectiveManager : MonoBehaviour
                     objectiveListPanel.transform.GetChild(i).GetComponent<TextMeshProUGUI>().fontStyle =
                         FontStyles.Strikethrough;
             }
+        }
+    }
+
+    private void WinState()
+    {
+        foreach (var t in allObjectives)
+        {
+            if (!(t.objectiveStatus is true)) continue;
+            Time.timeScale = 0;
+            winPanel.SetActive(true);
         }
     }
 #if UNITY_EDITOR

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ec85c8efdff4504c8384b232f585570, type: 3}
   m_Name: Objective2
   m_EditorClassIdentifier: 
-  objectiveName: Fix Toilet
+  objectiveName: '*Fix Toilet'
   objectiveStatus: 0

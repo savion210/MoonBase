@@ -1512,6 +1512,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Win_Screen
       objectReference: {fileID: 0}
+    - target: {fileID: 4059029060157338061, guid: f7e9205c180106042b82b37b68983290, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4059029060958304728, guid: f7e9205c180106042b82b37b68983290, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1530,6 +1534,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f7e9205c180106042b82b37b68983290, type: 3}
+--- !u!1 &184055900 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4059029060157338061, guid: f7e9205c180106042b82b37b68983290, type: 3}
+  m_PrefabInstance: {fileID: 184055899}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &202967590 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6938358462902388388, guid: e6b47969f7f18b043af7524f95abfd40, type: 3}
@@ -11149,6 +11158,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4354839815114684285, guid: a6cbe1e73d7caa14bbe35029d3898e7d, type: 3}
+      propertyPath: winPanel
+      value: 
+      objectReference: {fileID: 184055900}
     - target: {fileID: 4889429308652543795, guid: a6cbe1e73d7caa14bbe35029d3898e7d, type: 3}
       propertyPath: m_SizeDelta.x
       value: 349.8719
