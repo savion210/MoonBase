@@ -12,6 +12,7 @@ public class MainMenu : MonoBehaviour
    
        public void PlayTheLevel(string LevelName) //play the level base on given string 
        {
+           Time.timeScale = 1;
            SceneManager.LoadScene(LevelName);
        }
    
