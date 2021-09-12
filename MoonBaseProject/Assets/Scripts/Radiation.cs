@@ -18,6 +18,8 @@ public class Radiation : MonoBehaviour
     public RadiationExposure exposureLevel;
 
     public Image radiationWarning;
+
+    public GameObject gaugeNeedle;
     private void Start()
     {
         exposureLevel = RadiationExposure.Normal;
@@ -30,6 +32,7 @@ public class Radiation : MonoBehaviour
     {
         radiationLevel += RadiationPerHour * Time.deltaTime * radiationSpeed;
         ProcessAlpha();
+        ProcessGauge();
 
         if (radiationLevel < 1000)
         {
@@ -57,6 +60,13 @@ public class Radiation : MonoBehaviour
         {
             exposureLevel = RadiationExposure.Lethal;
         }
+    }
+
+    private void ProcessGauge()
+    {
+        var newRotation = Vector3.zero;
+        newRotation.z = PlayerStatus.Map(radiationLevel, 0, 10000, 135, -130);
+        gaugeNeedle.transform.localEulerAngles = newRotation;
     }
 
     private void ProcessAlpha()
