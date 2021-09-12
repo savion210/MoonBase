@@ -10,7 +10,7 @@ public class RequiredPiece : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        Debug.Log(other.tag);
+        //Debug.Log(other.tag);
         if (other.tag is "Player")
         {
             if (Input.GetKeyUp(KeyCode.E))

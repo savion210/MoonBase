@@ -68,7 +68,7 @@ public class PlayerStatus : MonoBehaviour
         {
             _dof.focusDistance.value = 10.0f;
             _dof.aperture.value = 10.0f;
-            _dof.focalLength.value = 100.0f;
+            _dof.focalLength.value = 30.0f;
         }
         else
         {
@@ -242,7 +242,7 @@ public class PlayerStatus : MonoBehaviour
         }
         
         if (deterrent == null) return;
-       
+        
         if (Input.GetKeyDown(KeyCode.E))
         {
             if (hit.collider.CompareTag("Food"))
