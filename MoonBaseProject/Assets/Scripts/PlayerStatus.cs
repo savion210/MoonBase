@@ -1,13 +1,15 @@
+using System;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.Serialization;
 
 public class PlayerStatus : MonoBehaviour
 {
-    public bool debug = false;
+    public bool debug;
     public SC_FPSController controller;
     public Camera main;
     public PostProcessVolume volume;
+    public Radiation radiation;
     
     [Range(0.0f, 10.0f)]
     public float sustenance = 10.0f;
@@ -27,6 +29,8 @@ public class PlayerStatus : MonoBehaviour
     private DepthOfField _dof;
     private Grain _grain;
     private ChromaticAberration _aberration;
+
+    private float radiationMultiplier;
     
     // Start is called before the first frame update
     private void Start()
@@ -38,6 +42,7 @@ public class PlayerStatus : MonoBehaviour
         stamina = 10.0f;
         sanity = 10.0f;
         debug = false;
+        radiationMultiplier = 1.0f;
 
         _dof = volume.sharedProfile.GetSetting<DepthOfField>();
         _grain = volume.sharedProfile.GetSetting<Grain>();
@@ -84,10 +89,11 @@ public class PlayerStatus : MonoBehaviour
         ProcessBlur();
         ProcessGrain();
         ProcessAberration();
+        ProcessRadiationLevels();
         
         // Sanity
         if (sustenance < 1.0f)
-            sanity -= 0.1f * Time.deltaTime;
+            sanity -= 0.1f * Time.deltaTime * radiationMultiplier;
 
         if (sanity < 0.0f)
             sanity = 0.0f;
@@ -98,10 +104,10 @@ public class PlayerStatus : MonoBehaviour
         
         if (controller.IsMoving)
         {
-            sustenance -= 0.01f * Time.deltaTime;            
+            sustenance -= 0.01f * Time.deltaTime * radiationMultiplier;            
             if (stamina > 0.0f)
             {
-                stamina -= 0.1f * Time.deltaTime;
+                stamina -= 0.1f * Time.deltaTime * radiationMultiplier;
             }
             else
             {
@@ -122,7 +128,7 @@ public class PlayerStatus : MonoBehaviour
         
         // Sustenance
         if(sustenance > 0.0f)
-            sustenance -= 0.01f * Time.deltaTime;
+            sustenance -= 0.01f * Time.deltaTime * radiationMultiplier;
         else
             sustenance = 0.0f;
     }
@@ -156,6 +162,19 @@ public class PlayerStatus : MonoBehaviour
         }
     }
 
+    private void ProcessRadiationLevels()
+    {
+        radiationMultiplier = radiation.exposureLevel switch
+        {
+            RadiationExposure.Normal => 1.0f,
+            RadiationExposure.Sickness => 1.15f,
+            RadiationExposure.Dangerous => 1.30f,
+            RadiationExposure.Severe => 1.5f,
+            RadiationExposure.Lethal => 2.0f,
+            _ => throw new ArgumentOutOfRangeException()
+        };
+    }
+
     [FormerlySerializedAs("_deterrent")] [HideInInspector] public HealthDeterrent deterrent;
     private string _prevObjectName = string.Empty;
 
@@ -165,20 +184,19 @@ public class PlayerStatus : MonoBehaviour
 
         if (!Physics.Raycast(main.transform.position, main.transform.forward, out var hit, 100.0f)) return;
 
-        if (_prevObjectName != hit.transform.name)
-        {
-            _prevObjectName = hit.transform.name;
-            deterrent = hit.transform.gameObject.GetComponent<HealthDeterrent>();
-        }
-
         if (debug)
         {
             print(hit.collider.tag);
             print("There is something in front of the object!  " + hit.transform.name);
         }
 
+        if (_prevObjectName != hit.transform.name)
+        {
+            _prevObjectName = hit.transform.name;
+            deterrent = hit.transform.gameObject.GetComponent<HealthDeterrent>();
+        }
+        
         if (deterrent == null) return;
-
        
         if (Input.GetKeyDown(KeyCode.E))
         {
