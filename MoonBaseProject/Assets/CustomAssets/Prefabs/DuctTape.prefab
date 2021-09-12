@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 1584698126987521856}
   - component: {fileID: 4563508610539411282}
   m_Layer: 0
-  m_Name: DuctTape
+  m_Name: DuctTape_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
