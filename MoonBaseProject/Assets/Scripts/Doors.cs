@@ -8,45 +8,48 @@ public class Doors : MonoBehaviour
     [SerializeField] private Transform Door1;
     [SerializeField] private Transform Door2;
 
-    private void FixedUpdate()
+
+    private Quaternion Door1Open;
+    private Quaternion Door1Closed;
+    private Quaternion Door2Open;
+    private Quaternion Door2Closed;
+    
+    [SerializeField] float smooth;
+    
+    private void Start()
     {
-        //RaycastHit hit;
-        // Ray ray = Camera.main.ScreenPointToRay(gameObject.transform.position); //or whatever you're doing for your ray
-        // float distance = 1f; //however far your ray shoots
-        // int layerMask = 1 << 7; // "7" here needing to be replaced by whatever layer it is you're wanting to use
-        // layerMask = ~layerMask; //invert the mask so it targets all layers EXCEPT for this one
-
-
-        if (!Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out var hit,
-            100.0f)) return;
-
-        if (!hit.collider.CompareTag("Door")) return;
-
-        // Open
-        // Door1.transform.Rotate(0, -90 * Time.deltaTime, 0, Space.Self);
-        // Door2.transform.Rotate(0, 90 * Time.deltaTime, 0, Space.Self);
-
-        return;
-        Door1.transform.Rotate(0, -90 * Time.deltaTime, 0, Space.Self);
-        Door2.transform.Rotate(0, 90 * Time.deltaTime, 0, Space.Self);
-
-        //if (Physics.Raycast(ray, out hit, distance, layerMask))
-        {
-            Door1.transform.Rotate(0, -90 * Time.deltaTime, 0, Space.Self);
-            Door2.transform.Rotate(0, 90 * Time.deltaTime, 0, Space.Self);
-        }
-        //else
-        {
-            Door1.transform.Rotate(0, 0 * Time.deltaTime, 0, Space.Self);
-            Door2.transform.Rotate(0, 0 * Time.deltaTime, 0, Space.Self);
-        }
-        
-        
+        Door1Closed = Door1.transform.rotation;
+        Door1Closed = Door2.transform.rotation;
     }
 
-    public void OpenDoors()
+    private void OnTriggerStay(Collider other)
     {
-        Door1.transform.Rotate(0, -90, 0, Space.Self);
-        Door2.transform.Rotate(0, 90, 0, Space.Self);
+        if (!other.name.Contains("Door")) return;
+        if (Input.GetKeyUp(KeyCode.E))
+            StartCoroutine(nameof(PassThruDoor));
+    }
+
+    private IEnumerator PassThruDoor()
+    {
+        // Door1.gameObject.SetActive(false);
+        // Door2.gameObject.SetActive(false);
+
+        Door1Open =  Quaternion.Euler(0, -25, 0);
+        Door1.rotation = Quaternion.Lerp(Door1Closed, Door1Open, 2f);
+        
+        Door2Open =  Quaternion.Euler(0, 180, 0);
+        Door2.rotation = Quaternion.Lerp(Door2Closed, Door2Open, 2f);
+
+
+        yield return new WaitForSeconds(2f);
+        
+        
+        Door1.rotation = Quaternion.Lerp(Door1Open, Door1Closed, smooth);
+        Door2.rotation = Quaternion.Lerp(Door2Open, Door2Closed, smooth);
+
+        // Door1.gameObject.SetActive(true);
+        // Door2.gameObject.SetActive(true);
+
+        StopAllCoroutines();
     }
 }
