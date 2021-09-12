@@ -5,51 +5,76 @@ using UnityEngine;
 
 public class Doors : MonoBehaviour
 {
-    [SerializeField] private Transform Door1;
-    [SerializeField] private Transform Door2;
+    [SerializeField] private GameObject doorPivot1;
+    [SerializeField] private GameObject doorPivot2;
 
+    Quaternion DoorClosedPivot1 = new Quaternion();
+    Quaternion DoorClosedPivot2 = new Quaternion();
+    Quaternion DoorOpenPivot1 = new Quaternion();
+    Quaternion DoorOpenPivot2 = new Quaternion();
+    
 
-    private Quaternion Door1Open;
-    private Quaternion Door1Closed;
-    private Quaternion Door2Open;
-    private Quaternion Door2Closed;
-    
-    [SerializeField] float smooth;
-    
+    public LayerMask layerMask;
+
+    public bool isOpened = false;
+
+    // this is the movement rate (if movemnt is applied to the door)
+    public float moveSpeed = 3;
+    // this is the rotation rate (if rotation is applied to the door)
+    public float rotationSpeedPiv1 = 90;
+    public float rotationSpeedPiv2 = -90;
+    public float rotationSpeedClosed = 0;
     private void Start()
     {
-        Door1Closed = Door1.transform.rotation;
-        Door1Closed = Door2.transform.rotation;
+        
+        DoorClosedPivot1.Set(0, 0.7f, 0, 0.7f);
+        DoorClosedPivot2.Set(0, 0.7f, 0, 0.7f);
+        DoorOpenPivot1.Set(0, 1, 0,1);
+        DoorOpenPivot2 .Set(0, 0, 0, 1);
+
+        isOpened = false;
     }
-
-    private void OnTriggerStay(Collider other)
+    private void Update()
     {
-        if (!other.name.Contains("Door")) return;
-        if (Input.GetKeyUp(KeyCode.E))
-            StartCoroutine(nameof(PassThruDoor));
-    }
 
-    private IEnumerator PassThruDoor()
-    {
-        // Door1.gameObject.SetActive(false);
-        // Door2.gameObject.SetActive(false);
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(gameObject.transform.position); //or whatever you're doing for your ray
+        float distance = 1f; //however far your ray shoots
+        int layerMask = 1 << 7; // "7" here needing to be replaced by whatever layer it is you're wanting to use
+        layerMask = ~layerMask; //invert the mask so it targets all layers EXCEPT for this one
 
-        Door1Open =  Quaternion.Euler(0, -25, 0);
-        Door1.rotation = Quaternion.Lerp(Door1Closed, Door1Open, 2f);
-        
-        Door2Open =  Quaternion.Euler(0, 180, 0);
-        Door2.rotation = Quaternion.Lerp(Door2Closed, Door2Open, 2f);
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+          
+
+            print(doorPivot1.transform.rotation.ToString() + "Door piv 1 :" + DoorOpenPivot1);
+            if (Physics.Raycast(ray, out hit, distance, layerMask))
+            {
+                
+                
+                isOpened = !isOpened;
+                print(isOpened);
+               
+
+            }
+            
+        }
+        //print(DoorClosedPivot1.ToString());
+
+        // these actually do the moving/rotating
+        //doorPivot1.transform.position = Vector3.MoveTowards(doorPivot1.transform.position, target.transform.position, moveSpeed * Time.deltaTime);
+
+        if (isOpened)
+        {
+            doorPivot1.transform.rotation = Quaternion.RotateTowards(doorPivot1.transform.rotation, DoorOpenPivot2, rotationSpeedPiv1 * Time.deltaTime);
+            doorPivot2.transform.rotation = Quaternion.RotateTowards(doorPivot2.transform.rotation, DoorOpenPivot2, rotationSpeedPiv2 * Time.deltaTime);
+        }
+        else
+        {
+            doorPivot1.transform.rotation = Quaternion.RotateTowards(doorPivot1.transform.rotation, DoorClosedPivot1, rotationSpeedPiv1 * Time.deltaTime);
+            doorPivot2.transform.rotation = Quaternion.RotateTowards(doorPivot2.transform.rotation, DoorClosedPivot2, rotationSpeedPiv1 * Time.deltaTime);
+        }
 
 
-        yield return new WaitForSeconds(2f);
-        
-        
-        Door1.rotation = Quaternion.Lerp(Door1Open, Door1Closed, smooth);
-        Door2.rotation = Quaternion.Lerp(Door2Open, Door2Closed, smooth);
-
-        // Door1.gameObject.SetActive(true);
-        // Door2.gameObject.SetActive(true);
-
-        StopAllCoroutines();
     }
 }
