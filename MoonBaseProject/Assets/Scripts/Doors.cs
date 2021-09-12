@@ -43,14 +43,13 @@ public class Doors : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E))
         {
           
-
-            print(doorPivot1.transform.rotation.ToString() + "Door piv 1 :" + DoorOpenPivot1);
+            
             if (Physics.Raycast(ray, out hit, distance, layerMask))
             {
                 
                 
                 isOpened = !isOpened;
-                print(isOpened);
+
                
 
             }

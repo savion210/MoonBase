@@ -10,7 +10,7 @@ using UnityEngine.UI;
 
 public class ObjectiveManager : MonoBehaviour
 {
-    private ObjectiveManager Instance = null;
+    public static ObjectiveManager Instance = null;
     private Objective[] allObjectives = null;
     [SerializeField] private GameObject objectiveListPanel = null;
     [SerializeField] private TextMeshProUGUI objectiveText = null;
@@ -40,7 +40,7 @@ public class ObjectiveManager : MonoBehaviour
             {
                 var thisObj = Instantiate(objectiveText, objectiveListPanel.transform);
                 thisObj.text = allObjectives[i].objectiveName;
-                thisObj.name = allObjectives[i].name;
+                thisObj.name = allObjectives[i].objectiveName;
                 thisObj.fontSize = 12f;
             }
         }
