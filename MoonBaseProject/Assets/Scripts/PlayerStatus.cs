@@ -57,7 +57,6 @@ public class PlayerStatus : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        
         // Initializing Default Values
         water = 5.0f;
         food = 5.0f;
@@ -167,19 +166,18 @@ public class PlayerStatus : MonoBehaviour
             
             if (stamina > 0.0f)
             {
-                stamina -= 0.1f * Time.deltaTime * _radiationMultiplier;
+                stamina -= 0.5f * Time.deltaTime * _radiationMultiplier;
             }
             else
             {
                 stamina = 0.0f;
                 controller.canMove = false;
-                
             }
         }
         else
         {
             if (stamina < 10.0f)
-                stamina += 0.25f * Time.deltaTime;
+                stamina += 0.4f * Time.deltaTime;
             else
                 stamina = 10.0f;
             
