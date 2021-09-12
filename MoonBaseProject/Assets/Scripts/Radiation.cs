@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum RadiationExposure
 {
@@ -16,9 +17,11 @@ public class Radiation : MonoBehaviour
     public float radiationSpeed = 1.0f;
     public RadiationExposure exposureLevel;
 
+    public Image radiationWarning;
     private void Start()
     {
         exposureLevel = RadiationExposure.Normal;
+        radiationWarning.gameObject.SetActive(false);
         radiationLevel = 0.0f;
     }
 
@@ -26,6 +29,7 @@ public class Radiation : MonoBehaviour
     private void Update()
     {
         radiationLevel += RadiationPerHour * Time.deltaTime * radiationSpeed;
+        ProcessAlpha();
 
         if (radiationLevel < 1000)
         {
@@ -35,11 +39,13 @@ public class Radiation : MonoBehaviour
         if (radiationLevel > 1000 && radiationLevel < 5000)
         {
             exposureLevel = RadiationExposure.Sickness;
+            radiationWarning.gameObject.SetActive(true);
         }
 
         if (radiationLevel >= 5000 && radiationLevel < 6000)
         {
             exposureLevel = RadiationExposure.Dangerous;
+            radiationWarning.gameObject.SetActive(true);
         }
 
         if (radiationLevel >= 6000 && radiationLevel < 10000)
@@ -50,6 +56,22 @@ public class Radiation : MonoBehaviour
         if (radiationLevel >= 10000)
         {
             exposureLevel = RadiationExposure.Lethal;
+        }
+    }
+
+    private void ProcessAlpha()
+    {
+        if (radiationLevel > 10000.0f)
+        {
+            var tempColor = radiationWarning.color;
+            tempColor.a = 1.0f;
+            radiationWarning.color = tempColor;
+        }
+        else
+        {
+            var tempColor = radiationWarning.color;
+            tempColor.a = PlayerStatus.Map(radiationLevel, 1000.0f, 10000.0f, 0.0f, 1.0f);
+            radiationWarning.color = tempColor;
         }
     }
 }

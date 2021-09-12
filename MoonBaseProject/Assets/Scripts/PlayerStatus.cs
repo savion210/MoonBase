@@ -18,6 +18,7 @@ public class PlayerStatus : MonoBehaviour
 
     public Image blindWarning;
     public Image injuryWarning;
+    public Image ptsdWarning;
     
     [Range(0.0f, 10.0f)]
     public float sustenance = 10.0f;
@@ -54,6 +55,7 @@ public class PlayerStatus : MonoBehaviour
         
         blindWarning.gameObject.SetActive(false);    
         injuryWarning.gameObject.SetActive(false);
+        ptsdWarning.gameObject.SetActive(false);
         
         _dof = volume.sharedProfile.GetSetting<DepthOfField>();
         _grain = volume.sharedProfile.GetSetting<Grain>();
@@ -101,6 +103,7 @@ public class PlayerStatus : MonoBehaviour
         ProcessGrain();
         ProcessAberration();
         ProcessRadiationLevels();
+        ProcessPTSDAlpha();
         
         sanityImage.fillAmount = Map(sanity, 0.0f, 10.0f, 0.0f, 1.0f);
         staminaImage.fillAmount = Map(stamina, 0.0f, 10.0f, 0.0f, 1.0f);
@@ -195,6 +198,24 @@ public class PlayerStatus : MonoBehaviour
         };
     }
 
+    private void ProcessPTSDAlpha()
+    {
+        if (sanity <= 1.0f)
+        {
+            var tempColor = ptsdWarning.color;
+            tempColor.a = 1.0f;
+            ptsdWarning.color = tempColor;
+        }
+        
+        if(sanity <= 8.0f)
+        {
+            ptsdWarning.gameObject.SetActive(true);
+            var tempColor = ptsdWarning.color;
+            tempColor.a = Map(sanity, 8.0f, 0.0f, 0.0f, 1.0f);
+            ptsdWarning.color = tempColor;
+        }
+    }
+
     [FormerlySerializedAs("_deterrent")] [HideInInspector] public HealthDeterrent deterrent;
     private string _prevObjectName = string.Empty;
 
@@ -250,7 +271,7 @@ public class PlayerStatus : MonoBehaviour
         }
     }
 
-    private static float Map(float x, float inMIN, float inMAX, float outMIN, float outMAX)
+    public static float Map(float x, float inMIN, float inMAX, float outMIN, float outMAX)
     {
         return (x - inMIN) * (outMAX - outMIN) / (inMAX - inMIN) + outMIN;
     }

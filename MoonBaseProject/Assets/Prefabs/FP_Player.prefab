@@ -160,6 +160,8 @@ GameObject:
   - component: {fileID: 9211906146710517459}
   - component: {fileID: 9211906146710517449}
   - component: {fileID: 9211906146710517448}
+  - component: {fileID: 1783530350307614032}
+  - component: {fileID: 9167358155242044205}
   m_Layer: 0
   m_Name: FP_Player
   m_TagString: Untagged
@@ -301,6 +303,13 @@ MonoBehaviour:
   controller: {fileID: 9211906146710517459}
   main: {fileID: 9211906145379530536}
   volume: {fileID: 0}
+  radiation: {fileID: 0}
+  sanityImage: {fileID: 0}
+  staminaImage: {fileID: 0}
+  sustenanceImage: {fileID: 0}
+  blindWarning: {fileID: 0}
+  injuryWarning: {fileID: 0}
+  ptsdWarning: {fileID: 0}
   sustenance: 10
   stamina: 10
   sanity: 10
@@ -322,3 +331,42 @@ MonoBehaviour:
   tScore: 1
   speedOfDecay: 0.15
   boneDensityStatus: 0
+  warning: {fileID: 0}
+--- !u!114 &1783530350307614032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9211906146710517456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 549b3c4825e81c64e99c1c873b30987c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radiationLevel: 0
+  radiationSpeed: 1
+  exposureLevel: 0
+  radiationWarning: {fileID: 0}
+--- !u!114 &9167358155242044205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9211906146710517456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c729f7a030421f4985ebc3fc74683cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  doorPivot1: {fileID: 0}
+  doorPivot2: {fileID: 0}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 8
+  isOpened: 0
+  moveSpeed: 3
+  rotationSpeedPiv1: 90
+  rotationSpeedPiv2: -90
+  rotationSpeedClosed: 0
