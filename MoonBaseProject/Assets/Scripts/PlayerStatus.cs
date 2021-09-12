@@ -35,16 +35,27 @@ public class PlayerStatus : MonoBehaviour
 
     [Range(1.0f, 3.0f)]
     public float food = 3.0f;
+
+    public AudioClip effect;
+
+    public AudioClip breathing;
+
+    public AudioClip fastBreathing;
     
+    private bool isBreathing = false;
+
     private DepthOfField _dof;
     private Grain _grain;
     private ChromaticAberration _aberration;
 
     private float _radiationMultiplier;
-    
+
+    [SerializeField]
+    private SoundManager sounds;
     // Start is called before the first frame update
     private void Start()
     {
+        
         // Initializing Default Values
         water = 5.0f;
         food = 3.0f;
@@ -53,7 +64,7 @@ public class PlayerStatus : MonoBehaviour
         sanity = 10.0f;
         debug = false;
         _radiationMultiplier = 1.0f;
-        
+        isBreathing = true;
         blindWarning.gameObject.SetActive(false);    
         injuryWarning.gameObject.SetActive(false);
         nearingPtsdWarning.gameObject.SetActive(false);
@@ -119,8 +130,28 @@ public class PlayerStatus : MonoBehaviour
             sanity = 0.0f;
 
         // Stamina
-        if(stamina > 0.5f)
+        if (stamina > 0.5f)
+        {
             controller.canMove = true;
+        }
+        
+
+        if(stamina <= 5.0f)
+        {
+            if (!sounds.MusicSource.isPlaying || sounds.MusicSource.clip == breathing)
+            {
+                ProcessSounds(fastBreathing);
+            }
+        }
+        else
+        {
+            if(!sounds.MusicSource.isPlaying || sounds.MusicSource.clip == fastBreathing)
+            {
+                
+                ProcessSounds(breathing);
+                isBreathing = false;
+            }
+        }
         
         if (controller.IsMoving)
         {
@@ -133,6 +164,7 @@ public class PlayerStatus : MonoBehaviour
             {
                 stamina = 0.0f;
                 controller.canMove = false;
+                
             }
         }
         else
@@ -153,6 +185,22 @@ public class PlayerStatus : MonoBehaviour
             sustenance = 0.0f;
     }
 
+    private void ProcessSounds(AudioClip audio)
+    {
+        if(audio != null)
+            sounds.PlayMusic(audio);
+    }
+
+    private void ProcessSoundEffects(AudioClip audio)
+    { 
+        if(audio != null) 
+            sounds.Play(audio);
+    }
+    /*private void ProcessSoundEffects()
+    {
+        sounds.Play(effect);
+    }
+    */
     private void ProcessBlur()
     {
         if (stamina < 5.0f)
@@ -189,7 +237,7 @@ public class PlayerStatus : MonoBehaviour
 
     private void ProcessRadiationLevels()
     {
-        _radiationMultiplier = radiation.exposureLevel switch
+        /*_radiationMultiplier = (float)radiation.exposureLevel switch
         {
             RadiationExposure.Normal => 1.0f,
             RadiationExposure.Sickness => 1.15f,
@@ -198,8 +246,36 @@ public class PlayerStatus : MonoBehaviour
             RadiationExposure.Lethal => 2.0f,
             _ => throw new ArgumentOutOfRangeException()
         };
-    }
+    */
 
+        switch (radiation.exposureLevel)
+        {
+            case RadiationExposure.Normal:
+                _radiationMultiplier = 1.0f;
+                break;
+
+            case RadiationExposure.Sickness:
+                _radiationMultiplier = 1.15f;
+                break;
+
+            case RadiationExposure.Dangerous:
+                _radiationMultiplier = 1.3f;
+                break;
+
+            case RadiationExposure.Severe:
+                _radiationMultiplier = 1.5f;
+                break;
+
+            case RadiationExposure.Lethal:
+                _radiationMultiplier = 2.0f;
+                break;
+
+            default:
+                print("Yeet");
+             break;
+        }
+    }
+        
     private void ProcessPTSDAlpha()
     {
         if (sanity <= 8.0f && sanity >= 4.0f)
@@ -245,9 +321,9 @@ public class PlayerStatus : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.E))
         {
-            if (hit.collider.CompareTag("Food"))
+            if (hit.collider.CompareTag("Food") && deterrent.Interaction(this))
             {
-                deterrent.Interaction(this);
+                
                 if (sustenance < 10.0f)
                 {
                     sustenance += food;
@@ -259,9 +335,8 @@ public class PlayerStatus : MonoBehaviour
                 }
             }
 
-            if (hit.collider.CompareTag("Drink"))
-            {
-                deterrent.Interaction(this);
+            if (hit.collider.CompareTag("Drink") && deterrent.Interaction(this))
+            {             
                 if (sustenance < 10.0f)
                 {
                     sustenance += water;
