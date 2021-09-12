@@ -39,8 +39,8 @@ public class ObjectiveManager : MonoBehaviour
             for (int i = 0; i < allObjectives.Length; i++)
             {
                 var thisObj = Instantiate(objectiveText, objectiveListPanel.transform);
-                thisObj.text = allObjectives[i].name;
-                thisObj.name = allObjectives[i].objectiveName;
+                thisObj.text = allObjectives[i].objectiveName;
+                thisObj.name = allObjectives[i].name;
                 thisObj.fontSize = 12f;
             }
         }
