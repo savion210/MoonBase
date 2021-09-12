@@ -23,7 +23,7 @@ public class Radiation : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         radiationLevel += RadiationPerHour * Time.deltaTime * radiationSpeed;
 

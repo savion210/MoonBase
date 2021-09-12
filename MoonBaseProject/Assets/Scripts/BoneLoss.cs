@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum BoneDensity
 {
@@ -16,6 +17,8 @@ public class BoneLoss : MonoBehaviour
     public float speedOfDecay = 1.0f;
 
     public BoneDensity boneDensityStatus;
+
+    public Image warning;
     
     // Start is called before the first frame update
     private void Start()
@@ -39,21 +42,25 @@ public class BoneLoss : MonoBehaviour
         if (tScore > -1.0f)
         {
             boneDensityStatus = BoneDensity.Normal;
+            warning.gameObject.SetActive(false);
         }
 
         if (tScore < -1.0f && tScore > -2.5f)
         {
             boneDensityStatus = BoneDensity.LowBoneMass;
+            warning.gameObject.SetActive(false);
         }
 
         if (tScore < -2.5f && tScore > -3.0f)
         {
             boneDensityStatus = BoneDensity.Osteoporosis;
+            warning.gameObject.SetActive(true);
         }
 
         if (tScore < -3.0f)
         {
             boneDensityStatus = BoneDensity.SevereOsteoporosis;
+            warning.gameObject.SetActive(true);
         }
     }
 }

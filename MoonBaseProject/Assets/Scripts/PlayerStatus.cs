@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public class PlayerStatus : MonoBehaviour
 {
@@ -10,6 +11,13 @@ public class PlayerStatus : MonoBehaviour
     public Camera main;
     public PostProcessVolume volume;
     public Radiation radiation;
+
+    public Image sanityImage;
+    public Image staminaImage;
+    public Image sustenanceImage;
+
+    public Image blindWarning;
+    public Image injuryWarning;
     
     [Range(0.0f, 10.0f)]
     public float sustenance = 10.0f;
@@ -30,7 +38,7 @@ public class PlayerStatus : MonoBehaviour
     private Grain _grain;
     private ChromaticAberration _aberration;
 
-    private float radiationMultiplier;
+    private float _radiationMultiplier;
     
     // Start is called before the first frame update
     private void Start()
@@ -42,8 +50,11 @@ public class PlayerStatus : MonoBehaviour
         stamina = 10.0f;
         sanity = 10.0f;
         debug = false;
-        radiationMultiplier = 1.0f;
-
+        _radiationMultiplier = 1.0f;
+        
+        blindWarning.gameObject.SetActive(false);    
+        injuryWarning.gameObject.SetActive(false);
+        
         _dof = volume.sharedProfile.GetSetting<DepthOfField>();
         _grain = volume.sharedProfile.GetSetting<Grain>();
         _aberration = volume.sharedProfile.GetSetting<ChromaticAberration>();
@@ -91,9 +102,13 @@ public class PlayerStatus : MonoBehaviour
         ProcessAberration();
         ProcessRadiationLevels();
         
+        sanityImage.fillAmount = Map(sanity, 0.0f, 10.0f, 0.0f, 1.0f);
+        staminaImage.fillAmount = Map(stamina, 0.0f, 10.0f, 0.0f, 1.0f);
+        sustenanceImage.fillAmount = Map(sustenance, 0.0f, 10.0f, 0.0f, 1.0f);
+        
         // Sanity
         if (sustenance < 1.0f)
-            sanity -= 0.1f * Time.deltaTime * radiationMultiplier;
+            sanity -= 0.1f * Time.deltaTime * _radiationMultiplier;
 
         if (sanity < 0.0f)
             sanity = 0.0f;
@@ -104,10 +119,10 @@ public class PlayerStatus : MonoBehaviour
         
         if (controller.IsMoving)
         {
-            sustenance -= 0.01f * Time.deltaTime * radiationMultiplier;            
+            sustenance -= 0.01f * Time.deltaTime * _radiationMultiplier;            
             if (stamina > 0.0f)
             {
-                stamina -= 0.1f * Time.deltaTime * radiationMultiplier;
+                stamina -= 0.1f * Time.deltaTime * _radiationMultiplier;
             }
             else
             {
@@ -128,7 +143,7 @@ public class PlayerStatus : MonoBehaviour
         
         // Sustenance
         if(sustenance > 0.0f)
-            sustenance -= 0.01f * Time.deltaTime * radiationMultiplier;
+            sustenance -= 0.01f * Time.deltaTime * _radiationMultiplier;
         else
             sustenance = 0.0f;
     }
@@ -138,6 +153,11 @@ public class PlayerStatus : MonoBehaviour
         if (stamina < 5.0f)
         {
             _dof.focusDistance.value = Map(stamina, 5.0f, 0.0f, 10.0f, 4.0f);
+            blindWarning.gameObject.SetActive(true);
+        }
+        else
+        {
+            blindWarning.gameObject.SetActive(false);
         }
     }
 
@@ -164,7 +184,7 @@ public class PlayerStatus : MonoBehaviour
 
     private void ProcessRadiationLevels()
     {
-        radiationMultiplier = radiation.exposureLevel switch
+        _radiationMultiplier = radiation.exposureLevel switch
         {
             RadiationExposure.Normal => 1.0f,
             RadiationExposure.Sickness => 1.15f,
