@@ -60,8 +60,12 @@ public class ObjectiveManager : MonoBehaviour
             for (int i = 0; i < objectiveListPanel.transform.childCount; i++)
             {
                 if (objectiveListPanel.transform.GetChild(i).name == t.objectiveName)
+                {
                     objectiveListPanel.transform.GetChild(i).GetComponent<TextMeshProUGUI>().fontStyle =
                         FontStyles.Strikethrough;
+                    objectiveListPanel.transform.GetChild(i).GetComponent<TextMeshProUGUI>().color = Color.green;
+                    
+                }
             }
         }
         CheckWinState();
