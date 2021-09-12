@@ -63,16 +63,20 @@ public class ObjectiveManager : MonoBehaviour
                         FontStyles.Strikethrough;
             }
         }
+        CheckWinState();
     }
 
-    private void WinState()
+    private void CheckWinState()
     {
+        int totalCompletedStatus = 0;
         foreach (var t in allObjectives)
         {
             if (!(t.objectiveStatus is true)) continue;
-            Time.timeScale = 0;
-            winPanel.SetActive(true);
+            totalCompletedStatus++;
         }
+        if (!(totalCompletedStatus is 3)) return;
+        Time.timeScale = 0;
+        winPanel.SetActive(true);
     }
 #if UNITY_EDITOR
     private void Update()
