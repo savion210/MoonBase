@@ -14,6 +14,7 @@ public class ObjectiveManager : MonoBehaviour
     private Objective[] allObjectives = null;
     [SerializeField] private GameObject objectiveListPanel = null, winPanel;
     [SerializeField] private TextMeshProUGUI objectiveText = null;
+    [SerializeField] private SC_FPSController controller = null;
 
     [Header("Chet Console")]
     [SerializeField] private GameObject chetConsole = null;
@@ -77,6 +78,9 @@ public class ObjectiveManager : MonoBehaviour
         if (!(totalCompletedStatus is 3)) return;
         Time.timeScale = 0;
         winPanel.SetActive(true);
+        controller.enabled = false;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 #if UNITY_EDITOR
     private void Update()
