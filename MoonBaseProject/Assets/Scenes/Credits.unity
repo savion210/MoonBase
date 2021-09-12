@@ -905,8 +905,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "Mission Moon Bound\n\nTeam Lead\n\nJonathan Ramos \n\n\nProgrammer\r\n\nJonathan
     Ramos \n\nShawn De La Cruz\n\nJeremy Pineda \n\n\nDesigner\r\n\nSavion Thomas
-    \n\n\nUI Artist\r\n\nDevin Davila \n\n\nArtist\n\nSamantha Beigel \n\n\nShadow/Researcher\n\nJoseph
-    Lewis"
+    \n\n\nUI Artist\r\n\nDevin Davila \n\n\nArtist\n\nSamantha Beigel \n\nResearcher\n\nJeremy
+    Pineda\n\nShawn De La Cruz\n\nSavion Thomas\n\nShadow\n\nJoseph Lewis"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

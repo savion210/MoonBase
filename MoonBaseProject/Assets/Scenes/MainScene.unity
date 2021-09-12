@@ -10937,6 +10937,10 @@ PrefabInstance:
       propertyPath: winPanel
       value: 
       objectReference: {fileID: 657078103}
+    - target: {fileID: 4354839815114684285, guid: a6cbe1e73d7caa14bbe35029d3898e7d, type: 3}
+      propertyPath: controller
+      value: 
+      objectReference: {fileID: 1187012029}
     - target: {fileID: 4889429308652543795, guid: a6cbe1e73d7caa14bbe35029d3898e7d, type: 3}
       propertyPath: m_SizeDelta.x
       value: 349.8719
