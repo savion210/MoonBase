@@ -139,7 +139,6 @@ public class PlayerStatus : MonoBehaviour
             controller.canMove = true;
         }
         
-
         if(stamina <= 5.0f)
         {
             if (!sounds.MusicSource.isPlaying || sounds.MusicSource.clip == breathing)
@@ -166,7 +165,7 @@ public class PlayerStatus : MonoBehaviour
             
             if (stamina > 0.0f)
             {
-                stamina -= 0.5f * Time.deltaTime * _radiationMultiplier;
+                stamina -= 0.4f * Time.deltaTime * _radiationMultiplier;
             }
             else
             {
@@ -188,8 +187,8 @@ public class PlayerStatus : MonoBehaviour
         // Sustenance
         if (sustenance > 0.0f)
         {
-            food -= 0.01f * Time.deltaTime * _radiationMultiplier;
-            water -= 0.01f * Time.deltaTime * _radiationMultiplier;
+            food -= 0.075f * Time.deltaTime * _radiationMultiplier;
+            water -= 0.075f * Time.deltaTime * _radiationMultiplier;
             sustenance = food + water;
         }
         else
@@ -197,7 +196,7 @@ public class PlayerStatus : MonoBehaviour
             food = 0;
             water = 0;
             sustenance = 0;
-    }
+        }
     }
 
     private void ProcessSounds(AudioClip audio)
@@ -221,6 +220,7 @@ public class PlayerStatus : MonoBehaviour
         if (stamina < 5.0f)
         {
             _dof.focusDistance.value = Map(stamina, 5.0f, 0.0f, 10.0f, 4.0f);
+            _dof.aperture.value = Map(stamina, 5.0f, 0.0f, 10.0f, 0.1f);
             blindWarning.gameObject.SetActive(true);
         }
         else
