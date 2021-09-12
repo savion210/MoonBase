@@ -20,6 +20,8 @@ public class PlayerStatus : MonoBehaviour
     public Image injuryWarning;
     public Image nearingPtsdWarning;
     public Image ptsdWarning;
+
+    public Image reticleImage;
     
     [Range(0.0f, 10.0f)]
     public float sustenance = 10.0f;
@@ -58,6 +60,7 @@ public class PlayerStatus : MonoBehaviour
         injuryWarning.gameObject.SetActive(false);
         nearingPtsdWarning.gameObject.SetActive(false);
         ptsdWarning.gameObject.SetActive(false);
+        reticleImage.gameObject.SetActive(false);
         
         _dof = volume.sharedProfile.GetSetting<DepthOfField>();
         _grain = volume.sharedProfile.GetSetting<Grain>();
@@ -242,6 +245,8 @@ public class PlayerStatus : MonoBehaviour
     {
         //Debug.DrawRay(main.transform.position, main.transform.forward, Color.black);
 
+        ProcessReticle();
+        
         if (!Physics.Raycast(main.transform.position, main.transform.forward, out var hit, 100.0f)) return;
 
         if (debug)
@@ -288,6 +293,38 @@ public class PlayerStatus : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void ProcessReticle()
+    {
+        if (!Physics.Raycast(main.transform.position, main.transform.forward, out var hit, 100.0f))
+        {
+            if(reticleImage.gameObject.activeSelf)
+                reticleImage.gameObject.SetActive(false);
+            return;
+        }
+
+        switch (hit.collider.tag)
+        {
+            case "Food":
+                reticleImage.gameObject.SetActive(true);
+                break;
+            case "Drink":
+                reticleImage.gameObject.SetActive(true);
+                break;
+            case "Door":
+                reticleImage.gameObject.SetActive(true);
+                break;
+            case "Tape":
+                reticleImage.gameObject.SetActive(true);
+                break;
+            case "Pickup":
+                reticleImage.gameObject.SetActive(true);
+                break;
+            default:
+                reticleImage.gameObject.SetActive(false);
+                break;
+        }        
     }
 
     public static float Map(float x, float inMIN, float inMAX, float outMIN, float outMAX)
